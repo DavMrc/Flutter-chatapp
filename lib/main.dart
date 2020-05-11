@@ -14,12 +14,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        backgroundColor: Colors.pink,
+        primarySwatch: Colors.pink,
+        accentColor: Colors.deepPurple,
+        accentColorBrightness: Brightness.dark,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        buttonTheme: ButtonTheme.of(context).copyWith(
+          buttonColor: Colors.pink,
+          textTheme: ButtonTextTheme.primary,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        ),
       ),
       routes: {
-        // '/': (_) => SAuth(),
-        '/': (_) => SChat(),
+        '/': (_) => SAuth(),
+        SChat.routeName: (_) => SChat(),
       },
     );
   }
