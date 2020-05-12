@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import './screens/SAuth.dart';
 import './screens/SChat.dart';
@@ -26,7 +27,14 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: {
-        '/': (_) => SAuth(),
+        // '/': (_) => SAuth(),
+        '/': (_) => StreamBuilder(
+          stream: FirebaseAuth.instance.onAuthStateChanged,
+          builder: (_, snapshot){
+            if(snapshot.hasData) return SChat();
+            else return SAuth();
+          },
+        ),
         SChat.routeName: (_) => SChat(),
       },
     );

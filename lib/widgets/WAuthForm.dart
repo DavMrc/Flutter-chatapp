@@ -6,7 +6,8 @@ class WAuthForm extends StatefulWidget {
     String username,
     String email,
     String password,
-    bool isLogin
+    bool isLogin,
+    BuildContext ctx
   }) submitAuthForm;
 
   WAuthForm(this.submitAuthForm);
@@ -42,25 +43,19 @@ class _WAuthFormState extends State<WAuthForm> {
     }
   }
 
-  void _login(){
+  void _submit(){
     if(this._formKey.currentState.validate()){
       this._formKey.currentState.save();
 
       FocusScope.of(context).unfocus();  // hides the softkey
 
       this.widget.submitAuthForm(
-        email: this._email,
-        password: this._password,
+        username: this._username.trim(),
+        email: this._email.trim(),
+        password: this._password.trim(),
         isLogin: this._isLogin,
+        ctx: context,
       );
-    }
-  }
-
-  void _signup(){
-    if(this._formKey.currentState.validate()){
-      this._formKey.currentState.save();
-
-      FocusScope.of(context).unfocus();
     }
   }
 
@@ -105,7 +100,7 @@ class _WAuthFormState extends State<WAuthForm> {
 
           RaisedButton(
             child: this._isLogin ? Text("Login") : Text("Create new account"),
-            onPressed: this._isLogin ? this._login : this._signup,
+            onPressed: this._submit,
           ),
 
           FlatButton(

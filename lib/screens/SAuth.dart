@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
 import '../widgets/WAuthForm.dart';
+
 
 
 class SAuth extends StatefulWidget {
@@ -9,15 +13,52 @@ class SAuth extends StatefulWidget {
 }
 
 class _SAuthState extends State<SAuth> {
+  final _auth = FirebaseAuth.instance;
 
-  void _submitAuthForm({String username, String email, String password, bool isLogin}){
+  void _submitAuthForm({
+    String username,
+    String email,
+    String password,
+    bool isLogin,
+    BuildContext ctx,
+  }) async {
+    try{
+      var authResult;
+      if(isLogin) authResult = await this._auth.signInWithEmailAndPassword(
+        email: email,
+        password: password
+      );
+      else {
+        authResult = await this._auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password
+        );
 
+        await Firestore.instance.collection('users')
+          .document(authResult.user.uid)
+          .setData({'username': username,'email': email,});
+      }
+
+    }
+    on PlatformException catch (error){
+      var msg = "An error occurred, check your credentials";
+
+      if(error.message != null) msg = error.message;
+
+      Scaffold.of(ctx).showSnackBar(SnackBar(
+        content: Text(msg),
+        backgroundColor: Theme.of(ctx).errorColor,
+      ));
+    }
+    catch(error){
+      print(error);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme.of(context).primaryColor, 
       body: Center(
         child: Card(
           elevation: 4,
