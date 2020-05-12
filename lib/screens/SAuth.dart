@@ -24,10 +24,32 @@ class _SAuthState extends State<SAuth> {
   }) async {
     try{
       var authResult;
-      if(isLogin) authResult = await this._auth.signInWithEmailAndPassword(
-        email: email,
-        password: password
-      );
+
+      if(isLogin) {
+        final currentUser = await this._auth.currentUser();
+
+        if(currentUser == null){
+          showDialog(
+            context: ctx,
+            builder: (_) => AlertDialog(
+              title: Text("Warning!", style: TextStyle(fontWeight: FontWeight.bold),),
+              content: Text("You seem to be already logged in on another device.\nPlease sign out from the other authenticated device."),
+              actions: [
+                FlatButton(
+                  child: Text("Okay"),
+                  onPressed: () => Navigator.of(ctx).pop(),
+                )
+              ],
+            ),
+          );
+        }else{  // login normaly
+          authResult = await this._auth.signInWithEmailAndPassword(
+            email: email,
+            password: password
+          );
+        }
+      }
+      // sign up
       else {
         authResult = await this._auth.createUserWithEmailAndPassword(
           email: email,
@@ -36,7 +58,10 @@ class _SAuthState extends State<SAuth> {
 
         await Firestore.instance.collection('users')
           .document(authResult.user.uid)
-          .setData({'username': username,'email': email,});
+          .setData({
+            'username': username,
+            'email': email,
+          });
       }
 
     }
@@ -51,7 +76,7 @@ class _SAuthState extends State<SAuth> {
       ));
     }
     catch(error){
-      print(error);
+      throw error;
     }
   }
 
