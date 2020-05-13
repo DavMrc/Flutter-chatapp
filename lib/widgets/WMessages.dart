@@ -11,7 +11,7 @@ class WMessages extends StatelessWidget {
     if(snapshot.connectionState == ConnectionState.waiting){
       return Center(child: CircularProgressIndicator(),);
     }
-    else{
+    else if(snapshot.connectionState == ConnectionState.done){
       return ListView.builder(
         reverse: true,
         itemCount: msgs.length,

@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 
 import '../widgets/WAuthForm.dart';
@@ -19,6 +21,7 @@ class _SAuthState extends State<SAuth> {
     String username,
     String email,
     String password,
+    File imageFile,
     bool isLogin,
     BuildContext ctx,
   }) async {
@@ -26,33 +29,6 @@ class _SAuthState extends State<SAuth> {
       var authResult;
 
       if(isLogin) {
-        // bool isLoggedIn = false;
-        // this._auth.onAuthStateChanged.listen((event) {
-        //   if(event.email == email){
-        //     isLoggedIn = true;
-        //   }
-        // });
-        // // final currentUser = await this._auth.currentUser();
-        // if(isLoggedIn){
-        //   showDialog(
-        //     context: ctx,
-        //     builder: (_) => AlertDialog(
-        //       title: Text("Warning!", style: TextStyle(fontWeight: FontWeight.bold),),
-        //       content: Text("You seem to be already logged in on another device.\nPlease sign out from the other authenticated device."),
-        //       actions: [
-        //         FlatButton(
-        //           child: Text("Okay"),
-        //           onPressed: () => Navigator.of(ctx).pop(),
-        //         )
-        //       ],
-        //     ),
-        //   );
-        // }else{  // login normaly
-        //   authResult = await this._auth.signInWithEmailAndPassword(
-        //     email: email,
-        //     password: password
-        //   );
-        // }
         authResult = await this._auth.signInWithEmailAndPassword(
           email: email,
           password: password
@@ -64,10 +40,20 @@ class _SAuthState extends State<SAuth> {
           email: email,
           password: password
         );
-        this._auth.onAuthStateChanged.listen((userData) {  // add extra info
+
+        final imageExtension = imageFile.path.substring(imageFile.path.lastIndexOf('.'));
+        final imageLocation = FirebaseStorage.instance.ref()
+          .child('user_images')
+          .child(authResult.user.uid);
+          // .child(authResult.user.uid + imageExtension);
+        await imageLocation.putFile(imageFile).onComplete;
+        final url = await imageLocation.getDownloadURL();
+
+        this._auth.onAuthStateChanged.listen((userData) {  // add extra info to FirebaseAuth.currentUser()
           if(userData != null){
             var userInfo = UserUpdateInfo();
             userInfo.displayName = username;
+            userInfo.photoUrl = url;
 
             userData.updateProfile(userInfo);
           }
@@ -78,6 +64,7 @@ class _SAuthState extends State<SAuth> {
           .setData({
             'username': username,
             'email': email,
+            'imageUrl': url,
           });
       }
 

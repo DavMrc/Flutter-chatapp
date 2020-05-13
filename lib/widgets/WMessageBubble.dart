@@ -38,7 +38,7 @@ class WMessageBubble extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border(bottom: BorderSide(
                     color: userStyle.usernameColor,
-                    width: 1.5, // Underline width
+                    width: 0.8, // Underline width
                   ))
                 ),
 

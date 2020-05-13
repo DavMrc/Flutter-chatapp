@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: {
-        // '/': (_) => SAuth(),
         '/': (_) => StreamBuilder(
           stream: FirebaseAuth.instance.onAuthStateChanged,
           builder: (_, snapshot){
@@ -36,7 +35,6 @@ class MyApp extends StatelessWidget {
             else return SAuth();
           },
         ),
-        SChat.routeName: (_) => SChat(),
       },
     );
   }

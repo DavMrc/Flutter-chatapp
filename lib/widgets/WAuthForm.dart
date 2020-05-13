@@ -1,4 +1,7 @@
+import 'dart:io';
 import "package:flutter/material.dart";
+
+import './WAuthImagePicker.dart';
 
 
 class WAuthForm extends StatefulWidget {
@@ -6,6 +9,7 @@ class WAuthForm extends StatefulWidget {
     String username,
     String email,
     String password,
+    File imageFile,
     bool isLogin,
     BuildContext ctx
   }) submitAuthForm;
@@ -23,6 +27,7 @@ class _WAuthFormState extends State<WAuthForm> {
   String _username = "";
   String _email = "";
   String _password = "";
+  File _userImage;
 
   String _validate(String value, String type){
     if(type == "email"){
@@ -44,7 +49,17 @@ class _WAuthFormState extends State<WAuthForm> {
   }
 
   void _submit(){
-    if(this._formKey.currentState.validate()){
+    if(this._userImage == null && !this._isLogin){
+      Scaffold.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.grey,
+        content: Text("You need to upload an image to submit the form!"),
+      ));
+
+      return;
+    }
+
+    bool formIsValid = this._formKey.currentState.validate();
+    if(formIsValid){
       this._formKey.currentState.save();
 
       FocusScope.of(context).unfocus();  // hides the softkey
@@ -53,10 +68,16 @@ class _WAuthFormState extends State<WAuthForm> {
         username: this._username.trim(),
         email: this._email.trim(),
         password: this._password.trim(),
+        imageFile: this._userImage,
         isLogin: this._isLogin,
         ctx: context,
+
       );
     }
+  }
+
+  void _pickedImage(File image){
+    this._userImage = image;
   }
 
   @override
@@ -66,6 +87,9 @@ class _WAuthFormState extends State<WAuthForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,  // takes as much space as strictly needed
         children: [
+          if(!this._isLogin)
+          WAuthImagePicker(this._pickedImage),
+
           if(!this._isLogin)
           TextFormField(
             key: ValueKey('username'),
