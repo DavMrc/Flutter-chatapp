@@ -7,20 +7,20 @@ import './WMessageBubble.dart';
 
 class WMessages extends StatelessWidget {
 
-  Widget _buildMsgsList(BuildContext ctx, AsyncSnapshot<dynamic> snapshot, dynamic docs){
+  Widget _buildMsgsList(BuildContext ctx, AsyncSnapshot<dynamic> snapshot, dynamic msgs){
     if(snapshot.connectionState == ConnectionState.waiting){
       return Center(child: CircularProgressIndicator(),);
     }
     else{
       return ListView.builder(
         reverse: true,
-        itemCount: docs.length,
+        itemCount: msgs.length,
         itemBuilder: (_, index){
           return WMessageBubble(
-            docs[index]['text'],
-            docs[index]['userId'],
-            docs[index]['userId'] == snapshot.data.uid,
-            key: ValueKey(docs[index].documentID),
+            msgs[index]['text'],
+            msgs[index]['sender'],
+            msgs[index]['userId'] == snapshot.data.uid,
+            key: ValueKey(msgs[index].documentID),
           );
         }
       );
@@ -47,8 +47,8 @@ class WMessages extends StatelessWidget {
                 return Center(child: CircularProgressIndicator(),);
               }
               else{
-                final docs = chatsSnapshot.data.documents;
-                return this._buildMsgsList(context, authSnapshot, docs);
+                final msgs = chatsSnapshot.data.documents;
+                return this._buildMsgsList(context, authSnapshot, msgs);
               }
             },
           );

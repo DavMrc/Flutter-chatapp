@@ -1,40 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class WMessageBubble extends StatelessWidget {
-  final String _text;
-  final String _userId;
+  final String _msgContent;
+  final String _userName;
   final bool _isThisUser;
   final Key key;
 
-  WMessageBubble(this._text, this._userId, this._isThisUser, {this.key});
-
-  Widget _fetchUserName(AsyncSnapshot<dynamic> snapshot, UserStyle userStyle){
-    if(snapshot.connectionState == ConnectionState.waiting){
-      return Text("...");
-    }else if (snapshot.connectionState == ConnectionState.done){
-      return Container(
-        margin: const EdgeInsets.only(bottom: 5),
-        // padding: const EdgeInsets.only(bottom: 1),   // adds extra spacing between underline and text
-        decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(
-            color: userStyle.usernameColor,
-            width: 1.5, // Underline width
-          ))
-        ),
-
-        child: Text(
-          snapshot.data['username'],
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: userStyle.usernameColor,
-          ),
-        ),
-      );
-    }
-  }
+  WMessageBubble(this._msgContent, this._userName, this._isThisUser, {this.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,17 +32,34 @@ class WMessageBubble extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FutureBuilder(
-                future: Firestore.instance.collection('users').document(this._userId).get(),
-                builder: (_, snapshot)  => this._fetchUserName(snapshot, userStyle)
+              Container(
+                margin: const EdgeInsets.only(bottom: 5),
+                // padding: const EdgeInsets.only(bottom: 1),   // adds extra spacing between underline and text
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(
+                    color: userStyle.usernameColor,
+                    width: 1.5, // Underline width
+                  ))
+                ),
+
+                child: Text(
+                  this._userName,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: userStyle.usernameColor,
+                  ),
+                ),
               ),
+
               Text(
-                this._text,
+                this._msgContent,
                 style: TextStyle(
                   fontSize: 16,
                   color: userStyle.contentColor,
                 ),
               ),
+
             ],
           ),
         ),
