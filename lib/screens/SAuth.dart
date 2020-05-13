@@ -58,12 +58,20 @@ class _SAuthState extends State<SAuth> {
           password: password
         );
       }
-      // sign up
-      else {
+      
+      else {  // sign up
         authResult = await this._auth.createUserWithEmailAndPassword(
           email: email,
           password: password
         );
+        this._auth.onAuthStateChanged.listen((userData) {  // add extra info
+          if(userData != null){
+            var userInfo = UserUpdateInfo();
+            userInfo.displayName = username;
+
+            userData.updateProfile(userInfo);
+          }
+        });
 
         await Firestore.instance.collection('users')
           .document(authResult.user.uid)
