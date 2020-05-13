@@ -19,6 +19,7 @@ class WMessages extends StatelessWidget {
           return WMessageBubble(
             msgs[index]['text'],
             msgs[index]['sender'],
+            msgs[index]['userImage'],
             msgs[index]['userId'] == snapshot.data.uid,
             key: ValueKey(msgs[index].documentID),
           );

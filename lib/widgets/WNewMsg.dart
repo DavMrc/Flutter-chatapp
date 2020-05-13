@@ -17,6 +17,7 @@ class _WNewMsgState extends State<WNewMsg> {
 
     Firestore.instance.collection('chats').add({
       'userId': user.uid,
+      'userImage': user.photoUrl,
       'sender': user.displayName,
       'text': this._controller.text,
       'createdAt': Timestamp.now(),

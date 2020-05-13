@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 class WMessageBubble extends StatelessWidget {
   final String _msgContent;
   final String _userName;
+  final String _userImageUrl;
   final bool _isThisUser;
   final Key key;
 
-  WMessageBubble(this._msgContent, this._userName, this._isThisUser, {this.key});
+  WMessageBubble(this._msgContent, this._userName, this._userImageUrl, this._isThisUser, {this.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class WMessageBubble extends StatelessWidget {
     return Row(
       mainAxisAlignment: userStyle.msgAlignment,
       children: [
-        Container(
+        Container(  // message "bubble" background
           width: MediaQuery.of(context).size.width * 0.55,
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -32,27 +33,41 @@ class WMessageBubble extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 5),
-                // padding: const EdgeInsets.only(bottom: 1),   // adds extra spacing between underline and text
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(
-                    color: userStyle.usernameColor,
-                    width: 0.8, // Underline width
-                  ))
-                ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Row(  // user img and name
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 18,
+                      backgroundImage: NetworkImage(this._userImageUrl),
+                    ),
 
-                child: Text(
-                  this._userName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: userStyle.usernameColor,
-                  ),
+                    SizedBox(width: 10,),
+
+                    Container(
+                      // padding: const EdgeInsets.only(bottom: 1),   // adds extra spacing between underline and text
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          color: userStyle.usernameColor,
+                          width: 0.8, // Underline width
+                        ))
+                      ),
+
+                      child: Text(
+                        this._userName,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: userStyle.usernameColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
-              Text(
+              Text(  // msg content
                 this._msgContent,
                 style: TextStyle(
                   fontSize: 16,
