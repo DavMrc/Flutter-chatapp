@@ -1,16 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class WMessageBubble extends StatelessWidget {
   final String _text;
+  final String _userId;
   final bool _isThisUser;
   final Key key;
 
-  WMessageBubble(this._text, this._isThisUser, {this.key});
+  WMessageBubble(this._text, this._userId, this._isThisUser, {this.key});
+
+  Widget _fetchUserName(AsyncSnapshot<dynamic> snapshot, UserStyle userStyle){
+    if(snapshot.connectionState == ConnectionState.waiting){
+      return Text("...");
+    }else if (snapshot.connectionState == ConnectionState.done){
+      return Container(
+        margin: const EdgeInsets.only(bottom: 5),
+        // padding: const EdgeInsets.only(bottom: 1),   // adds extra spacing between underline and text
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(
+            color: userStyle.usernameColor,
+            width: 1.5, // Underline width
+          ))
+        ),
+
+        child: Text(
+          snapshot.data['username'],
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: userStyle.usernameColor,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    UserStyle userStyle = UserStyle(context, _isThisUser);
+    UserStyle userStyle = UserStyle(context, this._isThisUser);
 
     return Row(
       mainAxisAlignment: userStyle.msgAlignment,
@@ -28,12 +56,21 @@ class WMessageBubble extends StatelessWidget {
             ),
           ),
 
-          child: Text(
-            this._text,
-            style: TextStyle(
-              fontSize: 16,
-              color: userStyle.textColor,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FutureBuilder(
+                future: Firestore.instance.collection('users').document(this._userId).get(),
+                builder: (_, snapshot)  => this._fetchUserName(snapshot, userStyle)
+              ),
+              Text(
+                this._text,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: userStyle.contentColor,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -73,9 +110,15 @@ class UserStyle{
       : Theme.of(context).secondaryHeaderColor;
   }
 
-  Color get textColor{
+  Color get contentColor{
     return this._isThisUser
       ? Theme.of(context).primaryTextTheme.headline6.color
       : Theme.of(context).textTheme.headline5.color;
+  }
+
+  Color get usernameColor{
+    return this._isThisUser
+      ? Theme.of(context).secondaryHeaderColor
+      : Theme.of(context).accentColor;
   }
 }
