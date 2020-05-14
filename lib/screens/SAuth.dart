@@ -65,6 +65,7 @@ class _SAuthState extends State<SAuth> {
             'username': username,
             'email': email,
             'imageUrl': url,
+            'contacts': [],
           });
       }
 

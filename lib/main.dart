@@ -31,7 +31,9 @@ class MyApp extends StatelessWidget {
         '/': (_) => StreamBuilder(
           stream: FirebaseAuth.instance.onAuthStateChanged,
           builder: (_, snapshot){
-            if(snapshot.hasData) return SChat();
+            if(snapshot.hasData){
+              return SChat(snapshot.data);
+            }
             else return SAuth();
           },
         ),

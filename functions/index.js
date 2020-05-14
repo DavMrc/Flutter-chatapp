@@ -15,7 +15,7 @@ exports.onMessage = functions.firestore
     .onCreate((snapshot, ctx) => {
         // console.log(snapshot.data());
 
-        return admin.messaging().sendToTopic('chats', {
+        return admin.messaging().sendToTopic('chat', {
             notification: {
                 title: snapshot.data().sender,
                 body: snapshot.data().text,

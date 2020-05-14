@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../widgets/WMessages.dart';
 import '../widgets/WNewMsg.dart';
+import '../widgets/WConversations.dart';
 
 
 class SChat extends StatefulWidget {
+  FirebaseUser _user;
+
+  SChat(this._user);
+
   @override
   _SChatState createState() => _SChatState();
 }
@@ -34,7 +40,7 @@ class _SChatState extends State<SChat> {
       },
     );
 
-    fbm.subscribeToTopic('chats');
+    fbm.subscribeToTopic('chat');
   }
 
   @override
@@ -72,15 +78,38 @@ class _SChatState extends State<SChat> {
           ),
         ],
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(child: WMessages()),
+      // body: Container(
+      //   child: Column(
+      //     children: [
+      //       Expanded(child: WMessages()),
 
-            WNewMsg(),
-          ],
+      //       WNewMsg(),
+
+      //     ],
+      //   ),
+      // ),
+       body: Container(
+        child: StreamBuilder(
+          stream: Firestore.instance.collection('users').document(this.widget._user.uid).snapshots(),
+          builder: (_, snapshot) {
+            if(snapshot.hasData){
+              if(snapshot.data['contacts'] == []){
+                return Text("You have no contacts");
+              }else{
+                return WConversations(snapshot.data['contacts']);
+              }
+            }else{
+              return Center(child: CircularProgressIndicator(),);
+            }
+          },
         ),
       ),
+
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   backgroundColor: Theme.of(context).accentColor,
+      //   onPressed: this._createNewConversation,
+      // ),
     );
   }
 }

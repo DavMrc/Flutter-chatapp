@@ -15,7 +15,7 @@ class _WNewMsgState extends State<WNewMsg> {
     FocusScope.of(context).unfocus();
     final user = await FirebaseAuth.instance.currentUser();
 
-    Firestore.instance.collection('chats').add({
+    Firestore.instance.collection('chat').add({
       'userId': user.uid,
       'userImage': user.photoUrl,
       'sender': user.displayName,

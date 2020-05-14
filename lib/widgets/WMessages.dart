@@ -39,7 +39,7 @@ class WMessages extends StatelessWidget {
         // current user data ready, build the msgs using a streambuilder
         else if(authSnapshot.connectionState == ConnectionState.done){
           return StreamBuilder(
-            stream: Firestore.instance.collection('chats')
+            stream: Firestore.instance.collection('chat')
               .orderBy('createdAt', descending: true)
               .snapshots(),
 
