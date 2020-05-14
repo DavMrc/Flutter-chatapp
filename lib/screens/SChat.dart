@@ -15,6 +15,8 @@ class _SChatState extends State<SChat> {
 
   @override
   void initState() {
+    super.initState();
+
     final fbm = FirebaseMessaging();
     fbm.requestNotificationPermissions();
     fbm.configure(
@@ -31,8 +33,8 @@ class _SChatState extends State<SChat> {
         return;
       },
     );
-    
-    super.initState();
+
+    fbm.subscribeToTopic('chats');
   }
 
   @override
@@ -41,28 +43,32 @@ class _SChatState extends State<SChat> {
       appBar: AppBar(
         title: Text("Your chats"),
         actions: [
-          DropdownButton(
-            icon: Icon(
-              Icons.more_vert,
-              color: Theme.of(context).primaryIconTheme.color
-            ),
-            items: [
-              DropdownMenuItem(
-                child: Container(
-                  child: Row(
-                    children: [
-                      Icon(Icons.exit_to_app),
-                      SizedBox(width: 8,),
-                      Text("Logout"),
-                    ],
-                  ),
-                ),
-                value: "logout",
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: DropdownButton(
+              underline: Container(),
+              icon: Icon(
+                Icons.more_vert,
+                color: Theme.of(context).primaryIconTheme.color
               ),
-            ],
-            onChanged: (itemIdentifier) {
-              if (itemIdentifier == 'logout') FirebaseAuth.instance.signOut();
-            },
+              items: [
+                DropdownMenuItem(
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Icon(Icons.exit_to_app),
+                        SizedBox(width: 8,),
+                        Text("Logout"),
+                      ],
+                    ),
+                  ),
+                  value: "logout",
+                ),
+              ],
+              onChanged: (itemIdentifier) {
+                if (itemIdentifier == 'logout') FirebaseAuth.instance.signOut();
+              },
+            ),
           ),
         ],
       ),

@@ -18,7 +18,6 @@ class WMessageBubble extends StatelessWidget {
       mainAxisAlignment: userStyle.msgAlignment,
       children: [
         Container(  // message "bubble" background
-          width: MediaQuery.of(context).size.width * 0.55,
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
@@ -67,11 +66,17 @@ class WMessageBubble extends StatelessWidget {
                 ),
               ),
 
-              Text(  // msg content
-                this._msgContent,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: userStyle.contentColor,
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.55,
+                  minWidth: 0,
+                ),
+                child: Text(  // msg content
+                  this._msgContent,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: userStyle.contentColor,
+                  ),
                 ),
               ),
 

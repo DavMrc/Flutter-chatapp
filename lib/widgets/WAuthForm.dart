@@ -102,6 +102,8 @@ class _WAuthFormState extends State<WAuthForm> {
           
           TextFormField(
             key: ValueKey('email'),
+            autocorrect: false,
+            textCapitalization: TextCapitalization.none,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               labelText: "Email address",
