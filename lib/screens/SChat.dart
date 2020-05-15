@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../widgets/WMessages.dart';
-import '../widgets/WNewMsg.dart';
+import '../screens/SSettings.dart';
 import '../widgets/WConversations.dart';
 
 
 class SChat extends StatefulWidget {
   FirebaseUser _user;
+  Map<String, dynamic> _userData = {};
 
   SChat(this._user);
 
@@ -62,6 +62,19 @@ class _SChatState extends State<SChat> {
                   child: Container(
                     child: Row(
                       children: [
+                        Icon(Icons.settings),
+                        SizedBox(width: 8,),
+                        Text("Settings"),
+                      ],
+                    ),
+                  ),
+                  value: "settings",
+                ),
+
+                DropdownMenuItem(
+                  child: Container(
+                    child: Row(
+                      children: [
                         Icon(Icons.exit_to_app),
                         SizedBox(width: 8,),
                         Text("Logout"),
@@ -73,26 +86,25 @@ class _SChatState extends State<SChat> {
               ],
               onChanged: (itemIdentifier) {
                 if (itemIdentifier == 'logout') FirebaseAuth.instance.signOut();
+                else if (itemIdentifier == "settings"){
+                  Navigator.of(context).pushNamed(
+                    SSettings.routeName,
+                    arguments: this.widget._userData,
+                  );
+                }
               },
             ),
           ),
         ],
       ),
-      // body: Container(
-      //   child: Column(
-      //     children: [
-      //       Expanded(child: WMessages()),
 
-      //       WNewMsg(),
-
-      //     ],
-      //   ),
-      // ),
-       body: Container(
+      body: Container(
         child: StreamBuilder(
           stream: Firestore.instance.collection('users').document(this.widget._user.uid).snapshots(),
           builder: (_, snapshot) {
             if(snapshot.hasData){
+              this.widget._userData = snapshot.data.data;
+
               if(snapshot.data['contacts'] == []){
                 return Text("You have no contacts");
               }else{

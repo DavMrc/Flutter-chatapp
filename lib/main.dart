@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import './screens/SAuth.dart';
 import './screens/SChat.dart';
+import './screens/SSettings.dart';
 
 
 void main() {
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
             else return SAuth();
           },
         ),
+        SSettings.routeName: (_) => SSettings(),
       },
     );
   }
