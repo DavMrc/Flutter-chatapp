@@ -56,17 +56,6 @@ class _SSettingsState extends State<SSettings> {
               
               SizedBox(height: 30,),
 
-              Text("Contacts"),
-
-              Expanded(
-                child: ListView.builder(
-                  itemCount: userData['contacts'].length,
-                  itemBuilder: (_, index) {
-                    return Text(userData['contacts'][index]);
-                  },
-                ),
-              ),
-
             ],
           ),
         ),

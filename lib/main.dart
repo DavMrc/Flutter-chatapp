@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import './screens/SAuth.dart';
-import './screens/SChat.dart';
+import './screens/SConversations.dart';
 import './screens/SSettings.dart';
 
 
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.onAuthStateChanged,
           builder: (_, snapshot){
             if(snapshot.hasData){
-              return SChat(snapshot.data);
+              return SConversations(snapshot.data);
             }
             else return SAuth();
           },

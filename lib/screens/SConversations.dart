@@ -4,20 +4,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../screens/SSettings.dart';
-import '../widgets/WConversations.dart';
+import '../widgets/WConversationItem.dart';
 
 
-class SChat extends StatefulWidget {
+class SConversations extends StatefulWidget {
   FirebaseUser _user;
-  Map<String, dynamic> _userData = {};
+  DocumentSnapshot _userData;
 
-  SChat(this._user);
+  SConversations(this._user);
 
   @override
-  _SChatState createState() => _SChatState();
+  _SConversationsState createState() => _SConversationsState();
 }
 
-class _SChatState extends State<SChat> {
+class _SConversationsState extends State<SConversations> {
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _SChatState extends State<SChat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your chats"),
+        title: Text("Your conversations"),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
@@ -100,28 +100,29 @@ class _SChatState extends State<SChat> {
 
       body: Container(
         child: StreamBuilder(
-          stream: Firestore.instance.collection('users').document(this.widget._user.uid).snapshots(),
+          stream: Firestore.instance.collection('users').snapshots(),
           builder: (_, snapshot) {
             if(snapshot.hasData){
-              this.widget._userData = snapshot.data.data;
+              final users = snapshot.data.documents;
 
-              if(snapshot.data['contacts'] == []){
-                return Text("You have no contacts");
-              }else{
-                return WConversations(snapshot.data['contacts']);
-              }
-            }else{
+              return ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (_, index) {
+                  if(users[index]['username'] == this.widget._user.displayName){
+                    this.widget._userData = users[index];
+                    return Container();
+                  }
+                  return WConversationItem(users[index]);
+                },
+              );
+            }
+            else{
               return Center(child: CircularProgressIndicator(),);
             }
           },
         ),
       ),
 
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   backgroundColor: Theme.of(context).accentColor,
-      //   onPressed: this._createNewConversation,
-      // ),
     );
   }
 }
