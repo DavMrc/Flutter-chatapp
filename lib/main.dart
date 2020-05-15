@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import './screens/SAuth.dart';
 import './screens/SConversations.dart';
 import './screens/SSettings.dart';
+import './screens/SChat.dart';
 
 
 void main() {
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
             else return SAuth();
           },
         ),
+        SChat.routeName: (_) => SChat(),
         SSettings.routeName: (_) => SSettings(),
       },
     );

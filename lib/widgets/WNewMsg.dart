@@ -4,6 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 class WNewMsg extends StatefulWidget {
+  final String _targetCollection;
+  final String _targetDocument;
+
+  WNewMsg(this._targetCollection, this._targetDocument);
+
   @override
   _WNewMsgState createState() => _WNewMsgState();
 }
@@ -15,13 +20,16 @@ class _WNewMsgState extends State<WNewMsg> {
     FocusScope.of(context).unfocus();
     final user = await FirebaseAuth.instance.currentUser();
 
-    Firestore.instance.collection('chat').add({
-      'userId': user.uid,
-      'userImage': user.photoUrl,
-      'sender': user.displayName,
-      'text': this._controller.text,
-      'createdAt': Timestamp.now(),
-    });
+    Firestore.instance
+      .collection(this.widget._targetCollection)
+      .document(this.widget._targetDocument)
+      .collection('msgs').add({
+        'userId': user.uid,
+        'userImage': user.photoUrl,
+        'sender': user.displayName,
+        'text': this._controller.text,
+        'createdAt': Timestamp.now(),
+      });
 
     this._controller.clear();
   }
