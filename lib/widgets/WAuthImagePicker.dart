@@ -31,10 +31,10 @@ class _WAuthImagePickerState extends State<WAuthImagePicker> {
         showDialog(
           context: context,
           builder: (_) => AlertDialog(
-            title: Text("Warning!"),
-            content: Text("You need to grant permission to the storage in order to upload an image!"),
+            title: const Text("Warning!"),
+            content: const Text("You need to grant permission to the storage in order to upload an image!"),
             actions: [
-              FlatButton(child: Text("Okay"), onPressed: () => Navigator.of(context).pop(),)
+              FlatButton(child: const Text("Okay"), onPressed: () => Navigator.of(context).pop(),)
             ],
           )
         );
@@ -57,8 +57,8 @@ class _WAuthImagePickerState extends State<WAuthImagePicker> {
         FlatButton.icon(
           textColor: Theme.of(context).primaryColor,
           onPressed: this._pickImage,
-          icon: Icon(Icons.photo),
-          label: Text("Upload image"),
+          icon: const Icon(Icons.photo),
+          label: const Text("Upload image"),
         ),
       ],
     );

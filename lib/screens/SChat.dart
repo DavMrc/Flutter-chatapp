@@ -32,14 +32,14 @@ class SChat extends StatelessWidget {
       );
     }
     else{
-      return Center(child: CircularProgressIndicator(),);
+      return const Center(child: const CircularProgressIndicator(),);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> routeArgs = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    this._contactId = (routeArgs['contactDocumentSnapshot'] as DocumentSnapshot).documentID;
+    this._contactId = routeArgs['contactDocumentSnapshot'].documentID;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +48,7 @@ class SChat extends StatelessWidget {
             CircleAvatar(
               backgroundImage: NetworkImage(routeArgs['contactDocumentSnapshot']['imageUrl']),
             ),
-            SizedBox(width: 10,),
+            const SizedBox(width: 10,),
             Text(routeArgs['contactDocumentSnapshot']['username']),
           ],
         ),
@@ -82,7 +82,7 @@ class WNoMsgs extends StatelessWidget {
       child: Chip(
         label: Text(
           "You guys have no msgs!",
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
         ),

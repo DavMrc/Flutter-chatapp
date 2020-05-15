@@ -53,7 +53,7 @@ class _SAuthState extends State<SAuth> {
           if(userData != null){
             var userInfo = UserUpdateInfo();
             userInfo.displayName = username;
-            userInfo.photoUrl = url;
+            // userInfo.photoUrl = url;
 
             userData.updateProfile(userInfo);
           }

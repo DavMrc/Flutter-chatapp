@@ -52,7 +52,7 @@ class _WAuthFormState extends State<WAuthForm> {
     if(this._userImage == null && !this._isLogin){
       Scaffold.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.grey,
-        content: Text("You need to upload an image to submit the form!"),
+        content: const Text("You need to upload an image to submit the form!"),
       ));
 
       return;
@@ -71,7 +71,6 @@ class _WAuthFormState extends State<WAuthForm> {
         imageFile: this._userImage,
         isLogin: this._isLogin,
         ctx: context,
-
       );
     }
   }
@@ -92,8 +91,8 @@ class _WAuthFormState extends State<WAuthForm> {
 
           if(!this._isLogin)
           TextFormField(
-            key: ValueKey('username'),
-            decoration: InputDecoration(
+            key: const ValueKey('username'),
+            decoration: const InputDecoration(
               labelText: "Username",
             ),
             validator: (value) => this._validate(value, 'username'),
@@ -101,11 +100,11 @@ class _WAuthFormState extends State<WAuthForm> {
           ),
           
           TextFormField(
-            key: ValueKey('email'),
+            key: const ValueKey('email'),
             autocorrect: false,
             textCapitalization: TextCapitalization.none,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Email address",
             ),
             validator: (value) => this._validate(value, 'email'),
@@ -113,7 +112,7 @@ class _WAuthFormState extends State<WAuthForm> {
           ),
 
           TextFormField(
-            key: ValueKey('password'),
+            key: const ValueKey('password'),
             obscureText: true,
             decoration: InputDecoration(
               labelText: "Password"
@@ -122,15 +121,15 @@ class _WAuthFormState extends State<WAuthForm> {
             onSaved: (newValue) => this._password = newValue,
           ),
 
-          SizedBox(height: 15,),
+          const SizedBox(height: 15,),
 
           RaisedButton(
-            child: this._isLogin ? Text("Login") : Text("Create new account"),
+            child: this._isLogin ? const Text("Login") : const Text("Create new account"),
             onPressed: this._submit,
           ),
 
           FlatButton(
-            child: this._isLogin ? Text("Create new account") : Text("Login"),
+            child: this._isLogin ? const Text("Create new account") : const Text("Login"),
             textColor: Theme.of(context).primaryColor,
             onPressed: (){
               setState(() {

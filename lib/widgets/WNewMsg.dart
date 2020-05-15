@@ -67,10 +67,10 @@ class _WNewMsgState extends State<WNewMsg> {
             ),
           ),
 
-          SizedBox(width: 8,),
+          const SizedBox(width: 8,),
 
           FloatingActionButton(
-            child: Icon(Icons.send),
+            child: const Icon(Icons.send),
             onPressed: () {
               if(this._controller.text.trim() == ""){
                 return null;

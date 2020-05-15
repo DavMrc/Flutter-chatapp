@@ -62,9 +62,9 @@ class _SConversationsState extends State<SConversations> {
                   child: Container(
                     child: Row(
                       children: [
-                        Icon(Icons.settings),
-                        SizedBox(width: 8,),
-                        Text("Settings"),
+                        const Icon(Icons.settings),
+                        const SizedBox(width: 8,),
+                        const Text("Settings"),
                       ],
                     ),
                   ),
@@ -75,9 +75,9 @@ class _SConversationsState extends State<SConversations> {
                   child: Container(
                     child: Row(
                       children: [
-                        Icon(Icons.exit_to_app),
-                        SizedBox(width: 8,),
-                        Text("Logout"),
+                        const Icon(Icons.exit_to_app),
+                        const SizedBox(width: 8,),
+                        const Text("Logout"),
                       ],
                     ),
                   ),
@@ -117,7 +117,7 @@ class _SConversationsState extends State<SConversations> {
               );
             }
             else{
-              return Center(child: CircularProgressIndicator(),);
+              return const Center(child: const CircularProgressIndicator(),);
             }
           },
         ),

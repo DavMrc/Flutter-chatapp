@@ -9,7 +9,7 @@ class WMessages extends StatelessWidget {
 
   Widget _buildMsgsList(BuildContext ctx, AsyncSnapshot<dynamic> snapshot, dynamic msgs){
     if(snapshot.connectionState == ConnectionState.waiting){
-      return Center(child: CircularProgressIndicator(),);
+      return const Center(child: const CircularProgressIndicator(),);
     }
     else if(snapshot.connectionState == ConnectionState.done){
       return ListView.builder(
@@ -34,7 +34,7 @@ class WMessages extends StatelessWidget {
       future: FirebaseAuth.instance.currentUser(),
       builder: (_, authSnapshot) {
         if(authSnapshot.connectionState == ConnectionState.waiting){
-          return Center(child: CircularProgressIndicator(),);
+          return const Center(child: const CircularProgressIndicator(),);
         }
         // current user data ready, build the msgs using a streambuilder
         else if(authSnapshot.connectionState == ConnectionState.done){
@@ -45,7 +45,7 @@ class WMessages extends StatelessWidget {
 
             builder: (_, chatsSnapshot) {
               if(chatsSnapshot.connectionState == ConnectionState.waiting){
-                return Center(child: CircularProgressIndicator(),);
+                return const Center(child: const CircularProgressIndicator(),);
               }
               else{
                 final msgs = chatsSnapshot.data.documents;

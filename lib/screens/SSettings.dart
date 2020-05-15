@@ -14,7 +14,7 @@ class _SSettingsState extends State<SSettings> {
     DocumentSnapshot userData = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Your account settings"),),
+      appBar: AppBar(title: const Text("Your account settings"),),
       body: Container(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -27,7 +27,7 @@ class _SSettingsState extends State<SSettings> {
                     backgroundImage: NetworkImage(userData['imageUrl']),
                     radius: 70,
                   ),
-                  SizedBox(width: 30,),
+                  const SizedBox(width: 30,),
 
                   Container(
                     child: Column(
@@ -36,7 +36,7 @@ class _SSettingsState extends State<SSettings> {
                       children: [
                         Text(
                           userData['username'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey
@@ -44,7 +44,7 @@ class _SSettingsState extends State<SSettings> {
                         ),
                         Text(
                           userData['email'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontStyle: FontStyle.italic,
                           ),

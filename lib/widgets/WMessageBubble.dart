@@ -42,7 +42,7 @@ class WMessageBubble extends StatelessWidget {
                       backgroundImage: NetworkImage(this._userImageUrl),
                     ),
 
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
 
                     Container(
                       // padding: const EdgeInsets.only(bottom: 1),   // adds extra spacing between underline and text

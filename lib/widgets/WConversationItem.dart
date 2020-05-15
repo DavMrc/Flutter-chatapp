@@ -25,20 +25,11 @@ class WConversationItem extends StatelessWidget {
           'contactDocumentSnapshot': _contactFullData
         },
       );
-      // print("There are msgs for path $chatPath");
-      // print("Documents @ $chatPath: ${chat.documents}");
     }
     else{
       chatPath = "${_contactFullData.documentID}_${currentUser.uid}";
       chat = await Firestore.instance.collection('chat')
         .document(chatPath).collection('msgs').getDocuments();
-
-      // if(chat.documents.isNotEmpty){
-      //   print("There are msgs for path $chatPath");
-      //   print("Documents @ $chatPath: ${chat.documents}");
-      // }else{
-      //   print("There are NO msgs for path $chatPath");
-      // }
 
       Navigator.of(context).pushNamed(
         SChat.routeName,
@@ -48,10 +39,6 @@ class WConversationItem extends StatelessWidget {
         },
       );
     }
-
-    // chat.
-  //   print("Chatpath: $chatPath");
-  //   print("Chat doc: ${chat.documents}");
   }
 
   @override
@@ -65,7 +52,7 @@ class WConversationItem extends StatelessWidget {
         ),
         title: Text(
           this._contactFullData['username'],
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20
           ),
         ),
