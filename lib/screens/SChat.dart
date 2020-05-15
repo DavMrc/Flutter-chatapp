@@ -7,7 +7,7 @@ import '../widgets/WNewMsg.dart';
 
 class SChat extends StatelessWidget {
   static const routeName = "/chat";
-  String _contactName;
+  String _contactId;
 
   Widget _buildMsgs(BuildContext context, AsyncSnapshot<dynamic> snapshot){
     if(snapshot.hasData){
@@ -25,7 +25,7 @@ class SChat extends StatelessWidget {
             msgs[index]['text'],
             msgs[index]['sender'],
             msgs[index]['userImage'],
-            msgs[index]['userId'] != this._contactName,
+            msgs[index]['userId'] != this._contactId,
             key: ValueKey(msgs[index].documentID),
           );
         }
@@ -39,7 +39,7 @@ class SChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> routeArgs = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    this._contactName = routeArgs['contactDocumentSnapshot']['username'];
+    this._contactId = (routeArgs['contactDocumentSnapshot'] as DocumentSnapshot).documentID;
 
     return Scaffold(
       appBar: AppBar(

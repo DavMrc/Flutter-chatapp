@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class SSettings extends StatefulWidget {
@@ -10,7 +11,7 @@ class SSettings extends StatefulWidget {
 class _SSettingsState extends State<SSettings> {
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> userData = ModalRoute.of(context).settings.arguments;
+    DocumentSnapshot userData = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(title: Text("Your account settings"),),

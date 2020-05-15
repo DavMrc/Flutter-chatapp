@@ -14,10 +14,10 @@ class WConversationItem extends StatelessWidget {
     final currentUser = await FirebaseAuth.instance.currentUser();
     var chatPath = "${currentUser.uid}_${_contactFullData.documentID}";
 
-    var chat = Firestore.instance.collection('chat')
-      .document(chatPath).get();
+    var chat = await Firestore.instance.collection('chat')
+      .document(chatPath).collection('msgs').getDocuments();
     
-    if(chat != null){
+    if(chat.documents.isNotEmpty){
       Navigator.of(context).pushNamed(
         SChat.routeName,
         arguments: {
@@ -25,11 +25,20 @@ class WConversationItem extends StatelessWidget {
           'contactDocumentSnapshot': _contactFullData
         },
       );
+      // print("There are msgs for path $chatPath");
+      // print("Documents @ $chatPath: ${chat.documents}");
     }
     else{
       chatPath = "${_contactFullData.documentID}_${currentUser.uid}";
-      chat = Firestore.instance.collection('chat')
-        .document(chatPath).get();
+      chat = await Firestore.instance.collection('chat')
+        .document(chatPath).collection('msgs').getDocuments();
+
+      // if(chat.documents.isNotEmpty){
+      //   print("There are msgs for path $chatPath");
+      //   print("Documents @ $chatPath: ${chat.documents}");
+      // }else{
+      //   print("There are NO msgs for path $chatPath");
+      // }
 
       Navigator.of(context).pushNamed(
         SChat.routeName,
@@ -39,6 +48,10 @@ class WConversationItem extends StatelessWidget {
         },
       );
     }
+
+    // chat.
+  //   print("Chatpath: $chatPath");
+  //   print("Chat doc: ${chat.documents}");
   }
 
   @override
